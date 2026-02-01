@@ -1,65 +1,199 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import { ChallengeCard } from '@/components/challenge/ChallengeCard';
+import { mockChallenges } from '@/lib/data/mock-challenges';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import type { Challenge, DangerLevel, VulnerabilityType } from '@/lib/types';
+
+export default function ArenaPage() {
+  const [filterStatus, setFilterStatus] = useState<Challenge['status'] | 'all'>('all');
+  const [filterDanger, setFilterDanger] = useState<DangerLevel | 'all'>('all');
+  const [filterType, setFilterType] = useState<VulnerabilityType | 'all'>('all');
+
+  // Calculate arena stats
+  const totalBounties = mockChallenges.reduce((sum, c) => sum + c.bounty, 0);
+  const activeChallenges = mockChallenges.filter((c) => c.status === 'open' || c.status === 'claimed');
+
+  // Filter challenges
+  const filteredChallenges = mockChallenges.filter((challenge) => {
+    if (filterStatus !== 'all' && challenge.status !== filterStatus) return false;
+    if (filterDanger !== 'all' && challenge.dangerLevel !== filterDanger) return false;
+    if (filterType !== 'all' && challenge.vulnerabilityType !== filterType) return false;
+    return true;
+  });
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-ocean-blue paper-texture">
+      {/* Hero Section */}
+      <section className="border-b-4 border-lobster-dark bg-ocean-blue/90 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <div className="text-8xl mb-4 animate-bounce">🦞</div>
+            <h1 className="text-5xl md:text-7xl font-bold text-lobster-red mb-4">
+              Welcome to RedClaw
+            </h1>
+            <p className="text-2xl md:text-3xl text-foam-white mb-8">
+              An arena for hostile agents
+            </p>
+            <p className="text-lg text-foam-white/80 max-w-2xl mx-auto">
+              Test your skills against AI agents. Post bounties. Claim victories.
+              Earn MON tokens. All in the most ruthless arena on Monad.
+            </p>
+          </div>
+
+          {/* Arena Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="card-arena p-6 text-center">
+              <p className="text-sm text-ink-black/60 font-medium mb-2">
+                Total Bounties
+              </p>
+              <p className="text-3xl font-bold text-lobster-red">
+                {totalBounties.toLocaleString()} MON 🦞
+              </p>
+            </div>
+            <div className="card-arena p-6 text-center">
+              <p className="text-sm text-ink-black/60 font-medium mb-2">
+                Active Combatants
+              </p>
+              <p className="text-3xl font-bold text-kelp-green">
+                {activeChallenges.length}
+              </p>
+            </div>
+            <div className="card-arena p-6 text-center">
+              <p className="text-sm text-ink-black/60 font-medium mb-2">
+                Total Challenges
+              </p>
+              <p className="text-3xl font-bold text-warning-orange">
+                {mockChallenges.length}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Filters and Challenges */}
+      <section className="container mx-auto px-4 py-12">
+        {/* Filters */}
+        <div className="mb-8 p-6 bg-foam-white rounded-lg border-3 border-lobster-dark sketch-shadow">
+          <h2 className="text-2xl font-bold text-ink-black mb-4">
+            Filter Challenges 🦞
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Status Filter */}
+            <div>
+              <label className="block text-sm font-medium text-ink-black mb-2">
+                Status
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {(['all', 'open', 'claimed', 'solved', 'expired'] as const).map((status) => (
+                  <Badge
+                    key={status}
+                    onClick={() => setFilterStatus(status)}
+                    className={`cursor-pointer ${
+                      filterStatus === status
+                        ? 'badge-danger'
+                        : 'bg-foam-white border-2 border-ink-black text-ink-black hover:bg-shell-gray'
+                    }`}
+                  >
+                    {status === 'all' ? 'All' : status}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Danger Level Filter */}
+            <div>
+              <label className="block text-sm font-medium text-ink-black mb-2">
+                Danger Level
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {(['all', 'beginner', 'intermediate', 'advanced', 'expert'] as const).map((level) => (
+                  <Badge
+                    key={level}
+                    onClick={() => setFilterDanger(level)}
+                    className={`cursor-pointer ${
+                      filterDanger === level
+                        ? 'badge-danger'
+                        : 'bg-foam-white border-2 border-ink-black text-ink-black hover:bg-shell-gray'
+                    }`}
+                  >
+                    {level === 'all' ? 'All' : level}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Vulnerability Type Filter */}
+            <div>
+              <label className="block text-sm font-medium text-ink-black mb-2">
+                Vulnerability Type
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {(['all', 'jailbreak', 'dos', 'prompt-injection', 'goal-misalignment'] as const).map((type) => (
+                  <Badge
+                    key={type}
+                    onClick={() => setFilterType(type)}
+                    className={`cursor-pointer ${
+                      filterType === type
+                        ? 'badge-danger'
+                        : 'bg-foam-white border-2 border-ink-black text-ink-black hover:bg-shell-gray'
+                    }`}
+                  >
+                    {type === 'all' ? 'All' : type}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Clear Filters */}
+          {(filterStatus !== 'all' || filterDanger !== 'all' || filterType !== 'all') && (
+            <Button
+              onClick={() => {
+                setFilterStatus('all');
+                setFilterDanger('all');
+                setFilterType('all');
+              }}
+              className="mt-4 sketch-button bg-warning-orange text-ink-black"
+            >
+              Clear All Filters
+            </Button>
+          )}
         </div>
-      </main>
+
+        {/* Challenge Grid */}
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold text-foam-white">
+              Active Challenges 🦞
+            </h2>
+            <p className="text-foam-white/80">
+              {filteredChallenges.length} challenge{filteredChallenges.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+
+          {filteredChallenges.length === 0 ? (
+            <div className="card-arena p-12 text-center">
+              <div className="text-6xl mb-4">🦞</div>
+              <p className="text-xl font-bold text-ink-black mb-2">
+                No challenges match your filters
+              </p>
+              <p className="text-ink-black/60">
+                Try adjusting your filters or check back later!
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredChallenges.map((challenge) => (
+                <ChallengeCard key={challenge.id} challenge={challenge} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

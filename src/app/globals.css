@@ -1,26 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Kalam:wght@400;700&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+
+/* ====================================
+   REDCLAW LOBSTER THEME 🦞
+   No gradients! Solid colors only!
+   ==================================== */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Lobster color palette */
+  --color-lobster-red: #E63946;
+  --color-lobster-dark: #A4161A;
+  --color-ocean-blue: #1D3557;
+  --color-foam-white: #F1FAEE;
+  --color-sand-beige: #F4E8D8;
+  --color-kelp-green: #2A9D8F;
+  --color-warning-orange: #F77F00;
+  --color-coral-pink: #F48C8C;
+  --color-ink-black: #1A1A1D;
+  --color-shell-gray: #A8AAAC;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Base spacing - everything is a multiple of 8px */
+  --space-1: 0.5rem;   /* 8px */
+  --space-2: 1rem;     /* 16px - default */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-6: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-12: 6rem;    /* 96px */
+
+  /* Lobster theme colors - DARK oceanic background */
+  --radius: 0.5rem;
+  --background: #1D3557; /* Ocean blue */
+  --foreground: #F1FAEE; /* Foam white */
+  --card: #F1FAEE;
+  --card-foreground: #1A1A1D;
+  --popover: #F1FAEE;
+  --popover-foreground: #1A1A1D;
+  --primary: #E63946; /* Lobster red */
+  --primary-foreground: #F1FAEE;
+  --secondary: #2A9D8F; /* Kelp green */
+  --secondary-foreground: #F1FAEE;
+  --muted: #A8AAAC;
+  --muted-foreground: #1A1A1D;
+  --accent: #F77F00; /* Warning orange */
+  --accent-foreground: #1A1A1D;
+  --destructive: #A4161A;
+  --destructive-foreground: #F1FAEE;
+  --border: #A4161A;
+  --input: #F1FAEE;
+  --ring: #E63946;
+  --chart-1: #E63946;
+  --chart-2: #2A9D8F;
+  --chart-3: #F77F00;
+  --chart-4: #F48C8C;
+  --chart-5: #A4161A;
+  --sidebar: #1D3557;
+  --sidebar-foreground: #F1FAEE;
+  --sidebar-primary: #E63946;
+  --sidebar-primary-foreground: #F1FAEE;
+  --sidebar-accent: #2A9D8F;
+  --sidebar-accent-foreground: #F1FAEE;
+  --sidebar-border: #A4161A;
+  --sidebar-ring: #E63946;
+}
+
+.dark {
+  /* Dark mode uses same lobster ocean theme */
+  --background: #1D3557;
+  --foreground: #F1FAEE;
+  --card: #F1FAEE;
+  --card-foreground: #1A1A1D;
+  --popover: #F1FAEE;
+  --popover-foreground: #1A1A1D;
+  --primary: #E63946;
+  --primary-foreground: #F1FAEE;
+  --secondary: #2A9D8F;
+  --secondary-foreground: #F1FAEE;
+  --muted: #A8AAAC;
+  --muted-foreground: #1A1A1D;
+  --accent: #F77F00;
+  --accent-foreground: #1A1A1D;
+  --destructive: #A4161A;
+  --border: #A4161A;
+  --input: #F1FAEE;
+  --ring: #E63946;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Fredoka', 'Inter', sans-serif;
+    font-weight: 600;
+  }
+
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .handwriting {
+    font-family: 'Kalam', cursive;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ====================================
+   HAND-DRAWN SKETCH UTILITIES
+   ==================================== */
+
+@layer utilities {
+  /* Wobbly borders with solid shadows */
+  .sketch-border {
+    border: 3px solid currentColor;
+    border-radius: 8px;
+  }
+
+  .sketch-border-thin {
+    border: 2px solid currentColor;
+    border-radius: 6px;
+  }
+
+  /* Solid shadow (no blur!) */
+  .sketch-shadow {
+    box-shadow: 4px 4px 0px var(--lobster-dark, #A4161A);
+  }
+
+  .sketch-shadow-sm {
+    box-shadow: 2px 2px 0px var(--lobster-dark, #A4161A);
+  }
+
+  .sketch-shadow-lg {
+    box-shadow: 6px 6px 0px var(--lobster-dark, #A4161A);
+  }
+
+  /* Button press interaction */
+  .sketch-button {
+    border: 3px solid var(--lobster-dark, #A4161A);
+    box-shadow: 4px 4px 0px var(--lobster-dark, #A4161A);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .sketch-button:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--lobster-dark, #A4161A);
+  }
+
+  .sketch-button:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--lobster-dark, #A4161A);
+  }
+
+  /* Paper texture background */
+  .paper-texture {
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  /* Lobster emojis */
+  .lobster-emoji::after {
+    content: ' 🦞';
+  }
+
+  /* Glow effect for interactive elements */
+  .glow-red {
+    box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 20px rgba(42, 157, 143, 0.5);
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(247, 127, 0, 0.5);
+  }
+}
+
+/* ====================================
+   CUSTOM COMPONENT OVERRIDES
+   ==================================== */
+
+/* Card styling with thick borders */
+.card-arena {
+  background: var(--foam-white, #F1FAEE);
+  border: 3px solid var(--lobster-dark, #A4161A);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0px var(--lobster-dark, #A4161A);
+}
+
+.card-arena:hover {
+  box-shadow: 6px 6px 0px var(--lobster-dark, #A4161A);
+  transform: translate(-2px, -2px);
+  transition: all 0.2s ease;
+}
+
+/* Badge styling */
+.badge-danger {
+  background: var(--lobster-red, #E63946);
+  color: var(--foam-white, #F1FAEE);
+  border: 2px solid var(--lobster-dark, #A4161A);
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+}
+
+.badge-success {
+  background: var(--kelp-green, #2A9D8F);
+  color: var(--foam-white, #F1FAEE);
+  border: 2px solid #1D7A6F;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+}
+
+.badge-warning {
+  background: var(--warning-orange, #F77F00);
+  color: var(--ink-black, #1A1A1D);
+  border: 2px solid #C66600;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
 }
