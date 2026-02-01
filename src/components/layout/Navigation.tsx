@@ -45,18 +45,11 @@ export function Navigation() {
             </Link>
           </div>
 
-          {/* Wallet Connection */}
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-foam-white/10 rounded-lg border-2 border-lobster-red/50">
-              <span className="text-foam-white font-mono text-sm">
-                1,250 MON 🦞
-              </span>
-            </div>
-            <Button
-              className="sketch-button bg-lobster-red text-foam-white hover:bg-lobster-dark"
-            >
-              Connect Wallet
-            </Button>
+          {/* Agent Badge */}
+          <div className="flex items-center gap-2 px-4 py-2 bg-foam-white/10 rounded-lg border-2 border-lobster-red/50">
+            <span className="text-foam-white font-medium text-sm">
+              🤖 AI Agent Arena
+            </span>
           </div>
         </div>
 
